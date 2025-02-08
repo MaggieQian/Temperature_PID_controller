@@ -25,18 +25,19 @@ PID myPID(&Input, &Output, &Setpoint, Kp, Ki, Kd, DIRECT);
 int WindowSize = 5000;
 unsigned long windowStartTime;
 
-#include <max6675.h>
-int thermoCLK = 13;
-int thermoCS = 4;
-int thermoDO = 12;
-MAX6675 thermocouple(thermoCLK, thermoCS, thermoDO);
+#include <SPI.h>
+#include <Adafruit_MAX31855.h>
+#define MAXDO  12
+#define MAXCS  4
+#define MAXCLK 13
+Adafruit_MAX31855 thermocouple(MAXCLK, MAXCS, MAXDO);
 
 const int relayPin = 9;
 
 void setup() 
 {
   Serial.begin(9600);
-  Serial.println("MAX6675 test with relay");
+  Serial.println("Temperature Logging Started");
   // wait for MAX chip to stabilize
   delay(500);
 
@@ -54,7 +55,7 @@ void setup()
 
 void loop() 
 {
-  Input = thermocouple.readCelsius();
+  double tempC = thermocouple.readCelsius();
 
   // readout test, print the current temp and target temp
   // can be plotted using Serial Plotter Tool
@@ -62,9 +63,8 @@ void loop()
   Serial.print(Setpoint);
   Serial.print(",");
   Serial.print("Temperature (degreeC): "); 
-  Serial.println(Input);
-  // For the MAX6675 to update, you must delay AT LEAST 250ms between reads!
-  delay(1000);
+  Serial.println(tempC);
+  delay(5000);
   
   myPID.Compute();
 
