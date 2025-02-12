@@ -1,9 +1,22 @@
+typedef struct Kpid_s{
+  float Kp;
+  float Ki;
+  float Kd;
+} Kpid_st;
+
+//Specify the links and initial tuning parameters
+double Kp, Ki, Kd;
+
+boolean rcv_from_py = false;
+
 // Receive list of numbers as string and parse them into 3 numbers
 const byte numChars = 120;
-char  receivedChars[numChars];  // an array to store received data
+char  receivedChars[numChars]; // an array to store received data
 char tempChars[numChars]; // temporary array for use when parsing
 
 char title[numChars] = {0}; 
+
+Kpid_st rcvData = {.Kp = 0, .Ki = 0, .Kd = 0}; // variables to hold the parsed data in order
 
 boolean newData = false;
 
@@ -54,19 +67,31 @@ void parseData() // split the data into its parts
   strcpy(title, strtokIndx);
 
   strtokIndx = strtok(NULL, ","); // get the first part
-  rcvData.a_1 = atoi(strtokIndx); // convert this part into integer
+  rcvData.Kp = atoi(strtokIndx); // convert this part into integer
 
   strtokIndx = strtok(NULL, ","); // this continues where the previous call left off
-  rcvData.a_2 = atoi(strtokIndx);
+  rcvData.Ki = atoi(strtokIndx);
 
   strtokIndx = strtok(NULL, ",");
-  rcvData.a_3 = atoi(strtokIndx);
+  rcvData.Kd = atoi(strtokIndx);
 }
 
 void showParsedData()
 {
   if (newData == true)
   {
+    Serial.print("Kp = "); 
+    Serial.print(rcvData.Kp);
+    Serial.print("Ki = "); 
+    Serial.print(rcvData.Ki);
+    Serial.print("Kd = "); 
+    Serial.print(rcvData.Kd);
+    Serial.println("."); 
+
+    rcv_from_py = true;
+    Kp = rcvData.Kp;
+    Ki = rcvData.Ki;
+    Kd = rcvData.Kd;
   }
 }
 
@@ -76,8 +101,6 @@ void showParsedData()
 #define RELAY_PIN 10
 //Define Variables we'll be connecting to
 double Setpoint, Input, Output;
-//Specify the links and initial tuning parameters
-double Kp=1, Ki=1, Kd=1;
 PID myPID(&Input, &Output, &Setpoint, Kp, Ki, Kd, DIRECT);
 
 int WindowSize = 5000;
