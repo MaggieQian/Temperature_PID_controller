@@ -64,7 +64,7 @@ try:
                 temperature_list.append(temp)
 
             except ValueError:
-                pass  # Ignore invalid readings
+                print(f"Warning: Invalid data received - '{data}' (Ignored)")  # Debugging output
         time.sleep(5)  # Log every 5 seconds
 
 except KeyboardInterrupt:
