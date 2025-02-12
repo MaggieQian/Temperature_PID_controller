@@ -1,24 +1,35 @@
 import serial
 import time
+from datetime import datetime
 import pandas as pd
 import matplotlib.pyplot as plt
+
+def NowStr():
+    x = datetime.now()
+    dateStr = f"{x.year:04}_{x.month:02}_{x.day:02}__{x.hour:02}{x.minute:02}{x.second:02}"
+    return dateStr
+# __start_time_str__ is initialised when the module / this file is loaded.
+__start_time_str__ = NowStr() #Don't change it now we have it set.
+
 
 # Set up Serial communication
 ser = serial.Serial('COM4', 9600, timeout=1)  # Change 'COM4' to your Arduino port
 time.sleep(2)  # Allow connection to establish
 
 def Send_to_Arduino(K):
-    args = ['Control values'] + K
-    str_val = str(args)
-    #print(f"{NowStr()} Sending: {str_val}")
+    str_val = str(K)
+    print(f"{NowStr()} Sending: {str_val}")
     try:
         data_written = serial_obj.write(str_val.encode())
     except:
         print("Write to Arduino failed.")
-    #Read_from_Arduino()
     return
 
-#=====================
+# pseuodo list of Kp, Ki, Kd
+K_arr = [1,1,1]
+Send_to_Arduino(K_arr)
+
+#---------------------------------------------------------------------------------
 # Specify file save location (Change this path as needed)
 csv_file = f"E:\\Maggie\\temperature_log_Kp{Kp}_Ki{Ki}_Kd{Kd}.csv"
 save_path_fig = f"E:\\Maggie\\temperature_log_Kp{Kp}_Ki{Ki}_Kd{Kd}.png"
