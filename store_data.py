@@ -1,7 +1,7 @@
 import serial
 import time
 from datetime import datetime
-import pandas as pd
+#import pandas as pd
 import matplotlib.pyplot as plt
 
 def NowStr():
@@ -13,14 +13,14 @@ __start_time_str__ = NowStr() #Don't change it now we have it set.
 
 
 # Set up Serial communication
-ser = serial.Serial('COM4', 9600, timeout=1)  # Change 'COM4' to your Arduino port
+ser = serial.Serial('COM5', 9600, timeout=1)  # Change 'COM4' to your Arduino port
 time.sleep(2)  # Allow connection to establish
 
-def Send_to_Arduino(K):
-    str_val = str(K)
+def Send_to_Arduino(k):
+    str_val = str(k)
     print(f"{NowStr()} Sending: {str_val}")
     try:
-        data_written = serial_obj.write(str_val.encode())
+        data_written = ser.write(str_val.encode())
     except:
         print("Write to Arduino failed.")
     return
@@ -31,8 +31,8 @@ Send_to_Arduino(K_arr)
 
 #---------------------------------------------------------------------------------
 # Specify file save location (Change this path as needed)
-csv_file = f"E:\\Maggie\\temperature_log_Kp{Kp}_Ki{Ki}_Kd{Kd}.csv"
-save_path_fig = f"E:\\Maggie\\temperature_log_Kp{Kp}_Ki{Ki}_Kd{Kd}.png"
+csv_file = f"E:\\Maggie\\temperature_log_Kp{K_arr[0]}_Ki{K_arr[1]}_Kd{K_arr[2]}.csv"
+save_path_fig = f"E:\\Maggie\\temperature_log_Kp{K_arr[0]}_Ki{K_arr[1]}_Kd{K_arr[2]}.png"
 
 # Create/open CSV file and write headers if it doesn’t exist
 with open(csv_file, "w") as f:

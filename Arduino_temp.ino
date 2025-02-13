@@ -5,7 +5,7 @@ typedef struct Kpid_s{
 } Kpid_st;
 
 //Specify the links and initial tuning parameters
-double Kp, Ki, Kd;
+double Kp=1, Ki=0, Kd=0;
 
 boolean rcv_from_py = false;
 
