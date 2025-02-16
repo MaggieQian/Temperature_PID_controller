@@ -67,13 +67,13 @@ void parseData() // split the data into its parts
   strcpy(title, strtokIndx);
 
   strtokIndx = strtok(NULL, ","); // get the first part
-  rcvData.Kp = atoi(strtokIndx); // convert this part into integer
+  rcvData.Kp = atof(strtokIndx); // convert this part into integer
 
   strtokIndx = strtok(NULL, ","); // this continues where the previous call left off
-  rcvData.Ki = atoi(strtokIndx);
+  rcvData.Ki = atof(strtokIndx);
 
   strtokIndx = strtok(NULL, ",");
-  rcvData.Kd = atoi(strtokIndx);
+  rcvData.Kd = atof(strtokIndx);
 }
 
 void showParsedData()
