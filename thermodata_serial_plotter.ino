@@ -27,7 +27,6 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
 
   double thermo1 = thermocouple1.readCelsius();
   double thermo2 = thermocouple2.readCelsius();
