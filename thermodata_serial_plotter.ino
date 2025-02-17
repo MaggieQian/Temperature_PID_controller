@@ -1,9 +1,12 @@
 #include <SPI.h>
 #include "Adafruit_MAX31855.h"
 
-Adafruit_MAX31855 thermocouple1(); // add our CS pins here
-Adafruit_MAX31855 thermocouple2();
-Adafruit_MAX31855 thermocouple3();
+#define MAXDO  12
+#define MAXCLK 13
+
+Adafruit_MAX31855 thermocouple1(MAXCLK, , MAXDO); // add our CS pins here
+Adafruit_MAX31855 thermocouple2(MAXCLK, , MAXDO);
+Adafruit_MAX31855 thermocouple3(MAXCLK, , MAXDO);
 
 
 void setup() {
@@ -27,6 +30,7 @@ void setup() {
 }
 
 void loop() {
+  // put your main code here, to run repeatedly:
 
   double thermo1 = thermocouple1.readCelsius();
   double thermo2 = thermocouple2.readCelsius();
