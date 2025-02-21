@@ -16,6 +16,7 @@ label3.pack()
 
 def update_temperatures():
     data = arduino.readline().decode().strip()  # Read Serial data
+    print(data)
     if data and not data.startswith("Thermocouple1"):  # Ignore header
         values = data.split(",")  # Split into list
         if len(values) == 3:  # Ensure correct data format
