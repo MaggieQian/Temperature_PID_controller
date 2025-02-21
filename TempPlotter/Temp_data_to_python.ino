@@ -7,7 +7,7 @@
 // Assigning Chip Select (CS) Pins
 Adafruit_MAX31855 thermocouple1(MAXCLK, 4, MAXDO);
 Adafruit_MAX31855 thermocouple2(MAXCLK, 5, MAXDO);
-Adafruit_MAX31855 thermocouple3(MAXCLK, 6, MAXDO);
+Adafruit_MAX31855 thermocouple3(MAXCLK, 7, MAXDO);
 
 void setup() {
     Serial.begin(9600);
