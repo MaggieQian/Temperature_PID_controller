@@ -2,11 +2,8 @@ import serial
 import tkinter as tk
 
 arduino = serial.Serial(port='COM3', baudrate=9600, timeout=1)
-
 root = tk.Tk()
 root.title("Real-Time Temperature Display")
-
-
 label1 = tk.Label(root, text="Temp 1: -- °C", font=("Arial", 16))
 label1.pack()
 label2 = tk.Label(root, text="Temp 2: -- °C", font=("Arial", 16))
