@@ -1,5 +1,24 @@
 import serial
 import tkinter as tk
+from collections import deque
+import statistics
+
+class RollingBuffer:
+    def __init__(self, size = 5):
+        self.buffer = deque(maxlen=size)
+    def add_data(self, data_point):
+        self.buffer.append(data_point)
+    def get_data(self):
+        return list(self.buffer)
+    def get_mean(self):
+        if self.buffer:
+            return statistics.mean(self.buffer)
+        return 0
+
+buffer_temp1 = RollingBuffer(size=5)
+buffer_temp2 = RollingBuffer(size=5)
+buffer_temp3 = RollingBuffer(size=5)    
+
 
 arduino = serial.Serial(port='COM3', baudrate=9600, timeout=1)
 root = tk.Tk()
@@ -16,12 +35,16 @@ def update_temperatures():
     print(data)
     if data and not data.startswith("Thermocouple1"):  # Ignore header
         values = data.split(",")  # Split into list
+        buffer_temp1.add_data(values[0])
+        buffer_temp2.add_data(values[1])
+        buffer_temp3.add_data(values[2])
+
         if len(values) == 3:  # Ensure correct data format
             try:
                 
-                label1.config(text=f"Temp 1: {values[0]} °C")
-                label2.config(text=f"Temp 2: {values[1]} °C")
-                label3.config(text=f"Temp 3: {values[2]} °C")
+                label1.config(text=f"Temp 1: {buffer_temp1.get_mean()} °C")
+                label2.config(text=f"Temp 2: {buffer_temp2.get_mean()} °C")
+                label3.config(text=f"Temp 3: {buffer_temp3.get_mean()} °C")
             except Exception as e:
                 print(f"Error updating values: {e}")
 
