@@ -14,11 +14,9 @@ class RollingBuffer:
         if self.buffer:
             return statistics.mean(self.buffer)
         return 0
-
-buffer_temp1 = RollingBuffer(size=5)
-buffer_temp2 = RollingBuffer(size=5)
-buffer_temp3 = RollingBuffer(size=5)    
-
+buffer_temp1 = RollingBuffer()
+buffer_temp2 = RollingBuffer()
+buffer_temp3 = RollingBuffer()
 
 arduino = serial.Serial(port='COM3', baudrate=9600, timeout=1)
 root = tk.Tk()
@@ -33,20 +31,21 @@ label3.pack()
 def update_temperatures():
     data = arduino.readline().decode().strip()  # Read Serial data
     print(data)
-    if data and not data.startswith("Thermocouple1"):  # Ignore header
-        values = data.split(",")  # Split into list
-        buffer_temp1.add_data(values[0])
-        buffer_temp2.add_data(values[1])
-        buffer_temp3.add_data(values[2])
+   # if data and not data.startswith("Thermocouple"):  # Ignore header
+    values = data.split(",")  # Split into list
 
-        if len(values) == 3:  # Ensure correct data format
-            try:
-                
-                label1.config(text=f"Temp 1: {buffer_temp1.get_mean()} °C")
-                label2.config(text=f"Temp 2: {buffer_temp2.get_mean()} °C")
-                label3.config(text=f"Temp 3: {buffer_temp3.get_mean()} °C")
-            except Exception as e:
-                print(f"Error updating values: {e}")
+    if len(values) == 3:  # Ensure correct data format
+        try:
+            buffer_temp1.add_data(float(values[0]))
+            buffer_temp2.add_data(float(values[1]))
+            buffer_temp3.add_data(float(values[2]))
+            print('entered')
+            
+            label1.config(text=f"Temp 1: {buffer_temp1.get_mean():.2f} °C")
+            label2.config(text=f"Temp 2: {buffer_temp2.get_mean():.2f} °C")
+            label3.config(text=f"Temp 3: {buffer_temp3.get_mean():.2f} °C")
+        except Exception as e:
+            print(f"Error updating values: {e}")
 
     root.after(1000, update_temperatures)  # Refresh every second
 
