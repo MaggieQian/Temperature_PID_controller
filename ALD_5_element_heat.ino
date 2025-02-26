@@ -1,6 +1,3 @@
-#include <Adafruit_CircuitPlayground.h>
-#include <Adafruit_Circuit_Playground.h>
-
 int writeHi = 255;
 int writeLo = 0;
 int cycTime = 5000;   // Number of miliseconds in each PWM set.
