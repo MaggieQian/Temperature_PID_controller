@@ -47,6 +47,6 @@ void loop() {
     if (i==round(cycTime*heat5Frac)) {
       analogWrite(2, writeLo);
     }
-    delay(1)
+    delay(1);
   }
 }
